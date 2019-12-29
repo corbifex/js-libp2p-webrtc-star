@@ -249,11 +249,10 @@ class WebRTCStar {
     log('Peer Discovered:', maStr)
     maStr = cleanMultiaddr(maStr)
 
-    const split = maStr.split('/ipfs/')
-    const peerIdStr = split[split.length - 1]
-    const peerId = PeerId.createFromB58String(peerIdStr)
+    const ma = multiaddr(maStr)
+    const peerId = PeerId.createFromB58String(ma.getPeerId())
     const peerInfo = new PeerInfo(peerId)
-    peerInfo.multiaddrs.add(multiaddr(maStr))
+    peerInfo.multiaddrs.add(ma)
     this.discovery.emit('peer', peerInfo)
   }
 }
